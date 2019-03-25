@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Twitchflix</string>
+    <string name="title">Twitchflix</string>
+    <string name="livestreams">LiveStreams</string>
+    <string name="vods">Vods</string>
+    <string name="settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="vodbutton">VodButton</string>
+    <string name="liveButton">liveButton</string>
+    <string name="settingsButton">settingsButton</string>
+    <string name="live">Live</string>
+
+
+</resources>
