@@ -13,9 +13,9 @@ import android.widget.TextView;
 public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>{
 
     // recycler view has no default onclicklistener
-    // create interface to implement own onClick to each cardView
+    // create interface to implement own onClick to each viewHolder
     public interface OnItemClickListener{
-         void onItemClick(CardView cardView);
+         void onItemClick(CardAdapter.MyViewHolder holder);
     }
 
     // Provide a reference to the views for each data item
@@ -41,14 +41,14 @@ public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>
 
 
          // bind the data to its place inside the cardView and set the onClickListener
-         public void bind(String film_title, int film_image, final CardView cardview, final OnItemClickListener listener){
+         public void bind(final CardAdapter.MyViewHolder holder, String film_title, int film_image,  final OnItemClickListener listener){
              title.setText(film_title);
              image.setImageResource(film_image);
 
              itemView.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
-                     listener.onItemClick(cardview);
+                     listener.onItemClick(holder);
                  }
              });
          }
@@ -67,8 +67,8 @@ public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
-        // bind takes the data for each cardview, a reference to the cardview and the listener
-        myViewHolder.bind(mFilm[i], R.drawable.vod_icon, myViewHolder.cardView, listener);
+        // bind takes  a reference to the viewholder, the data for each cardview and the listener
+        myViewHolder.bind(myViewHolder, mFilm[i], R.drawable.vod_icon, listener);
 
     }
 
