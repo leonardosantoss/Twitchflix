@@ -10,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="5dip"
-        android:layout_marginTop="11dp"
-        android:layout_marginRight="5dip"
-        android:padding="5dp">
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:padding="5dp"
+        app:cardBackgroundColor="@color/LightBlack">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,15 +26,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                app:srcCompat="@drawable/vod_icon"
-                android:contentDescription="@string/imageVod" />
+                android:contentDescription="@string/imageVod"
+                app:srcCompat="@drawable/vod_icon" />
 
             <TextView
                 android:id="@+id/film_title"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
                 android:text="@string/vods"
-                android:layout_marginLeft="10dp"
                 android:textSize="20sp" />
         </LinearLayout>
 
