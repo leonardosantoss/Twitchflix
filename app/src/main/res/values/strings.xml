@@ -12,6 +12,7 @@
     <string name="settingsButton">settingsButton</string>
     <string name="live">Live</string>
     <string name="image">image</string>
+    <string name="imageVod">imageVod</string>
 
 
 </resources>
