@@ -1,5 +1,7 @@
 package com.example.twitchflix;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,8 +35,14 @@ public class VodsFragment extends Fragment {
             @Override
             public void onItemClick(CardAdapter.MyViewHolder holder) {
 
-                String filmTitle = holder.title.getText().toString();
-                Toast.makeText(getContext(), filmTitle , Toast.LENGTH_LONG).show();
+                //String filmTitle = holder.title.getText().toString();
+                //Toast.makeText(getContext(), filmTitle , Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
+                String film_url = "https://ia800201.us.archive.org/22/items/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
+                intent.putExtra("film_url", film_url);
+                startActivity(intent);
+
+
             }
         });
 
