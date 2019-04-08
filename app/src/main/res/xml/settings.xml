@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Main Settings">
+
+        <SwitchPreference
+            android:key="internet_access_switch"
+            android:title="Allow Internet Access"
+            android:defaultValue="true"/>
+
+        <SwitchPreference
+            android:key="mobile_data_switch"
+            android:title="Allow Mobile Data"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

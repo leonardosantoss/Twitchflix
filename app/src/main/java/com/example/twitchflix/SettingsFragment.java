@@ -1,20 +1,44 @@
 package com.example.twitchflix;
 
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
+import android.widget.Toast;
 
-public class SettingsFragment extends Fragment {
-    @Nullable
+
+public class SettingsFragment extends PreferenceFragmentCompat {
+    private SharedPreferences.OnSharedPreferenceChangeListener listener;
+
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
 
-        View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        return rootView;
+        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                if(key.equals("internet_access_switch")){
+
+                    Toast.makeText(getContext(), "Internet", Toast.LENGTH_SHORT).show();
+                }
+                else if(key.equals("mobile_data_switch")){
+                    Toast.makeText(getContext(), "Mobile", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        prefs.registerOnSharedPreferenceChangeListener(listener);
+
+
     }
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.settings, rootKey);
+    }
+
+    // permissions tutorial https://demonuts.com/android-runtime-permissions/
 }
