@@ -10,86 +10,61 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import cz.msebera.android.httpclient.HttpEntity;
-import cz.msebera.android.httpclient.HttpResponse;
-import cz.msebera.android.httpclient.client.methods.HttpGet;
-import cz.msebera.android.httpclient.impl.client.CloseableHttpClient;
-import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
-import cz.msebera.android.httpclient.protocol.BasicHttpContext;
-import cz.msebera.android.httpclient.protocol.HttpContext;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class LiveFragment extends Fragment {
+
+
+    public String url = "http://192.168.1.74:8081/server/webapi/myresource";
+    TextView textView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_live, container, false);
 
 
-        new LongRunningGetIO(rootView).execute();
+        textView = (TextView) rootView.findViewById(R.id.textViewLive);
+
+        OkHttpHandler okHttpHandler = new OkHttpHandler();
+        okHttpHandler.execute(url);
+
 
         return rootView;
     }
 
-    private class LongRunningGetIO extends AsyncTask<Void,Void,String> {
+    public class OkHttpHandler extends AsyncTask<String,String,String>{
 
-        View mView;
-        public LongRunningGetIO(View view){
-            this.mView = view;
-        }
-
-        protected String getContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException {
-            InputStream in = entity.getContent();
-
-
-            StringBuffer out = new StringBuffer();
-            int n = 1;
-            while (n>0) {
-                byte[] b = new byte[4096];
-                n =  in.read(b);
-
-
-                if (n>0) out.append(new String(b, 0, n));
-            }
-            
-            return out.toString();
-        }
-
+        OkHttpClient client = new OkHttpClient();
+        
         @Override
-        protected String doInBackground(Void... voids) {
-            String text =  null;
-            try(CloseableHttpClient httpClient = HttpClientBuilder.create().build()){
+        protected String doInBackground(String...params) {
+            Request.Builder builder = new Request.Builder();
+            builder.url(params[0]);
+            Request request = builder.build();
 
-                HttpContext localContext = new BasicHttpContext();
-                HttpGet httpGet = new HttpGet("http://192.168.1.74:8081/server/webapi/myresource");
 
-                try{
-                    HttpResponse response =  httpClient.execute(httpGet, localContext);
-                    HttpEntity entity = response.getEntity();
-                    text = getContentFromEntity(entity);
-                    System.out.println(text);
+            //.toString(): This returns your object in string format.
+            // .string(): This returns your response.
 
-                }catch (Exception e){
-                    System.out.println("Error " + e.getLocalizedMessage());
-                }
-
-            } catch(IOException e){
-                System.out.println("Error " + e.getLocalizedMessage());
+            try{
+                Response response = client.newCall(request).execute();
+                return response.body().string();
+            }catch (Exception e){
+                e.printStackTrace();
             }
 
-
-            return text;
+            return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if(s!=null){
-                TextView live = mView.findViewById(R.id.textViewLive);
-                live.setText(s);
-            }
+            textView.setText(s);
+
         }
     }
+
 }
