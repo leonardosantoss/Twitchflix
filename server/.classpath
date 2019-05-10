@@ -34,5 +34,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/daniel/Desktop/School 3/PM/mariadb-java-client-2.4.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
