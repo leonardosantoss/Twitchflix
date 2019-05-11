@@ -27,8 +27,9 @@ public class GetMovie {
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_PLAIN)
-    public String getIt(@FormParam("id") String id) {
+    public String getIt(@FormParam("filmId") String id) {
     	System.out.println("ID: " + id);
+    	String link = "ERROR";
     	Connection conn = null;
         Statement stmt = null;
         try {
@@ -51,7 +52,7 @@ public class GetMovie {
             System.out.println("Retrieved from database...");
             
             while (rs.next()) {
-            	System.out.println(rs.getString("link"));
+            	link = rs.getString("link");
             }
         } catch (SQLException se) {
             //Handle errors for JDBC
@@ -76,6 +77,6 @@ public class GetMovie {
             }//end finally try
         }//end try
         System.out.println("Goodbye!");
-        return "aaaa";
+        return link;
     }
 }

@@ -6,7 +6,7 @@
     for more information on Jersey!
     
     <form action="webapi/get_movie" method="post"  enctype="application/json"> 
-    	Movie ID: <input type="text" name="id"><br>
+    	Movie ID: <input type="text" name="filmId"><br>
   		<input type="submit" value="Submit">
     </form>
 </body>
