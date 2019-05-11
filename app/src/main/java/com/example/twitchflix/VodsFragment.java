@@ -28,7 +28,7 @@ import okhttp3.Response;
 public class VodsFragment extends Fragment {
 
 
-    public String url = "http://192.168.1.74:8081/server/webapi/myresource";
+    public String url = "https://twitchflix-240014.appspot.com/webapi/myresource";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -85,6 +85,8 @@ public class VodsFragment extends Fragment {
 
             try {
                 JSONArray jsonarray = new JSONArray(s);
+                titles = new String[jsonarray.length()];
+                filmIds = new int[jsonarray.length()];
                 for (int i = 0; i < jsonarray.length(); i++) {
                     JSONObject jsonobject = jsonarray.getJSONObject(i);
                     titles[i] = jsonobject.getString("name");
