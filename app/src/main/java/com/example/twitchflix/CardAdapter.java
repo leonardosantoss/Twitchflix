@@ -1,5 +1,6 @@
 package com.example.twitchflix;
 
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,10 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>{
 
     // recycler view has no default onclicklistener
@@ -19,11 +24,17 @@ public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>
     }
 
     // Provide a reference to the views for each data item
-    private String[] mFilm = {"Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9" };
+    //private String[] mFilm = {"Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9" };
     private OnItemClickListener listener;
+    private String[] mFilm;
+    private int[] mFilmId;
 
-    public CardAdapter(OnItemClickListener listener){
+
+
+    public CardAdapter(OnItemClickListener listener, String[] mFilm, int[] mFilmId){
         this.listener = listener;
+        this.mFilm = mFilm;
+        this.mFilmId = mFilmId;
     }
 
 

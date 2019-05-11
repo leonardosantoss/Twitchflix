@@ -23,7 +23,7 @@ public class MyResource {
     // JDBC driver name and database URL
 
     static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
-    static final String DB_URL = "jdbc:mariadb://35.240.44.105:3306/twitchflixdb";
+    static final String DB_URL = "jdbc:mariadb://35.205.211.14:3306/twitchflixdb";
 
     //  Database credentials
     static final String USER = "root";

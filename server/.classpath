@@ -29,11 +29,7 @@
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-8-oracle">
-		<attributes>
-			<attribute name="owner.project.facets" value="java"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/home/daniel/Desktop/School 3/PM/mariadb-java-client-2.4.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/leonardosantos/Downloads/mariadb-java-client-2.4.1-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
