@@ -139,7 +139,7 @@ public class VodsFragment extends Fragment {
         protected String doInBackground(String... strings) {
             OkHttpClient client = new OkHttpClient();
             RequestBody formBody = new FormBody.Builder()
-                    .add("Film Id", filmId + "")
+                    .add("filmId", filmId + "")
                     .build();
             Request request = new Request.Builder()
                     .url("https://twitchflix-240014.appspot.com/webapi/get_movie")
