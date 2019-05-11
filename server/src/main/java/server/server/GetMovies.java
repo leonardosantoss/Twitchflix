@@ -15,19 +15,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Root resource (exposed at "myresource" path)
+ * Root resource (exposed at "get_movies" path)
  */
-@Path("myresource")
-public class MyResource {
-    // JDBC driver name and database URL
-
-    static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
-    static final String DB_URL = "jdbc:mariadb://35.205.211.14:3306/twitchflixdb";
-
-    //  Database credentials
-    static final String USER = "root";
-    static final String PASS = "mariadbroot";
-    
+@Path("get_movies")
+public class GetMovies {
     /**
      * Method handling HTTP GET requests. The returned object will be sent
      * to the client as "text/plain" media type.
@@ -42,11 +33,11 @@ public class MyResource {
         Statement stmt = null;
         try {
             //STEP 2: Register JDBC driver
-            Class.forName("org.mariadb.jdbc.Driver");
+            Class.forName( Globals.JDBC_DRIVER );
 
             //STEP 3: Open a connection
             System.out.println("Connecting to a selected database...");
-            conn = DriverManager.getConnection( DB_URL, USER, PASS);
+            conn = DriverManager.getConnection( Globals.DB_URL, Globals.USER, Globals.PASS);
             System.out.println("Connected database successfully...");
 
             //STEP 4: Execute a query
@@ -60,7 +51,7 @@ public class MyResource {
             
             while (rs.next()) {
             	arrayBuilder.add(Json.createObjectBuilder()
-        			.add("id", rs.getInt("idmovies"))
+        			.add("idmovies", rs.getInt("idmovies"))
         			.add("name", rs.getString("name"))
         			.add("link", rs.getString("link"))
         			.build());
