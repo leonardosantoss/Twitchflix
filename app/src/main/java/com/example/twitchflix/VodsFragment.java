@@ -18,11 +18,20 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class VodsFragment extends Fragment {
@@ -47,7 +56,7 @@ public class VodsFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.recycler_view_vods);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-
+        recyclerView.setAdapter(mAdapter);
 
 
 
@@ -101,22 +110,56 @@ public class VodsFragment extends Fragment {
                 @Override
                 public void onItemClick(CardAdapter.MyViewHolder holder) {
 
-                    String filmTitle = holder.title.getText().toString();
-                    Toast.makeText(getContext(), filmTitle , Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
-                    String film_url = "https://ia800201.us.archive.org/22/items/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
-                    intent.putExtra("film_url", film_url);
-                    startActivity(intent);
-
-
+                    int filmId = holder.id;
+                    //Toast.makeText(getContext(), filmTitle + "" , Toast.LENGTH_LONG).show();
+                    //Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
+                    //String film_url = "https://ia800201.us.archive.org/22/items/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
+                    //intent.putExtra("film_url", film_url);
+                    //startActivity(intent);
+                    postMovieId pmid = new postMovieId(filmId);
+                    pmid.execute("https://twitchflix-240014.appspot.com/webapi/get_movie");
                 }
             }, titles, filmIds);
 
             // adapter to the card based layout
+            mAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(mAdapter);
             //textView.setText(s);
 
         }
     }
 
+    public class postMovieId extends AsyncTask<String, String, String> {
+
+        int filmId;
+        public postMovieId(int filmId){
+            this.filmId = filmId;
+        }
+        @Override
+        protected String doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient();
+            RequestBody formBody = new FormBody.Builder()
+                    .add("Film Id", filmId + "")
+                    .build();
+            Request request = new Request.Builder()
+                    .url("https://twitchflix-240014.appspot.com/webapi/get_movie")
+                    .post(formBody)
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                System.out.println("Handle Response");
+                return response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            System.out.println(s);
+        }
+    }
 }

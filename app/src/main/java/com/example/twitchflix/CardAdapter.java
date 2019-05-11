@@ -42,6 +42,7 @@ public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>
         public TextView title;
         public ImageView image;
         public CardView cardView;
+        int id;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -52,7 +53,7 @@ public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>
 
 
          // bind the data to its place inside the cardView and set the onClickListener
-         public void bind(final CardAdapter.MyViewHolder holder, String film_title, int film_image,  final OnItemClickListener listener){
+         public void bind(final CardAdapter.MyViewHolder holder, String film_title, int film_image, int film_id, final OnItemClickListener listener){
              title.setText(film_title);
              image.setImageResource(film_image);
 
@@ -62,6 +63,8 @@ public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>
                      listener.onItemClick(holder);
                  }
              });
+             id = film_id;
+
          }
 
     }
@@ -79,7 +82,7 @@ public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
         // bind takes  a reference to the viewholder, the data for each cardview and the listener
-        myViewHolder.bind(myViewHolder, mFilm[i], R.drawable.vod_icon, listener);
+        myViewHolder.bind(myViewHolder, mFilm[i], R.drawable.vod_icon, mFilmId[i] ,listener);
 
     }
 
