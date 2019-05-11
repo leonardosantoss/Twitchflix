@@ -9,7 +9,6 @@ import java.sql.Statement;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -39,7 +38,6 @@ public class MyResource {
     @Produces(MediaType.APPLICATION_JSON)
     public JsonArray getIt() {
     	JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-    	JsonObject obj = null;
     	Connection conn = null;
         Statement stmt = null;
         try {
@@ -61,12 +59,11 @@ public class MyResource {
             System.out.println("Retrieved from database...");
             
             while (rs.next()) {
-            	obj = Json.createObjectBuilder()
+            	arrayBuilder.add(Json.createObjectBuilder()
         			.add("id", rs.getInt("idmovies"))
         			.add("name", rs.getString("name"))
         			.add("link", rs.getString("link"))
-        			.build();
-            	arrayBuilder.add(obj);
+        			.build());
             }
         } catch (SQLException se) {
             //Handle errors for JDBC
