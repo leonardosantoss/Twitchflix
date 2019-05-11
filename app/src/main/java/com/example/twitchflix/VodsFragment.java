@@ -28,7 +28,7 @@ import okhttp3.Response;
 public class VodsFragment extends Fragment {
 
 
-    public String url = "https://twitchflix-240014.appspot.com/webapi/myresource";
+    public String url = "https://twitchflix-240014.appspot.com/webapi/get_movies";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
