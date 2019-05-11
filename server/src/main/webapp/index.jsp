@@ -4,5 +4,10 @@
     <p><a href="webapi/get_movies">Jersey resource</a>
     <p>Visit <a href="http://jersey.java.net">Project Jersey website</a>
     for more information on Jersey!
+    
+    <form action="webapi/get_movie" method="post"  enctype="application/json"> 
+    	Movie ID: <input type="text" name="filmId"><br>
+  		<input type="submit" value="Submit">
+    </form>
 </body>
 </html>

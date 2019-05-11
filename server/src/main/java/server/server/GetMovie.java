@@ -6,29 +6,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.ws.rs.GET;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Root resource (exposed at "get_movies" path)
+ * Root resource (exposed at "get_movie" path)
  */
-@Path("get_movies")
-public class GetMovies {
+@Path("get_movie")
+public class GetMovie {
     /**
      * Method handling HTTP GET requests. The returned object will be sent
      * to the client as "text/plain" media type.
      *
      * @return String that will be returned as a text/plain response.
      */
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public JsonArray getIt() {
-    	JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getIt(@FormParam("filmId") String id) {
+    	System.out.println("ID: " + id);
+    	String link = "ERROR";
     	Connection conn = null;
         Statement stmt = null;
         try {
@@ -43,23 +44,15 @@ public class GetMovies {
             //STEP 4: Execute a query
             System.out.println("Retrieving from database...");
             stmt = conn.createStatement();
-
-            String sql = "Select * from movies";
+            
+            //CHANGE QUERY
+            String sql = "Select link from movies where idmovies = " + id;
 
             ResultSet rs = stmt.executeQuery(sql);
             System.out.println("Retrieved from database...");
             
             while (rs.next()) {
-            	String picLink = rs.getString("picturelink");
-            	
-            	if(picLink == null)
-            		picLink = "default";
-            	
-            	arrayBuilder.add(Json.createObjectBuilder()
-        			.add("idmovies", rs.getInt("idmovies"))
-        			.add("name", rs.getString("name"))
-        			.add("picturelink", picLink)
-        			.build());
+            	link = rs.getString("link");
             }
         } catch (SQLException se) {
             //Handle errors for JDBC
@@ -84,6 +77,6 @@ public class GetMovies {
             }//end finally try
         }//end try
         System.out.println("Goodbye!");
-        return arrayBuilder.build();
+        return link;
     }
 }
