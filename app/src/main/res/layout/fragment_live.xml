@@ -17,4 +17,5 @@
         android:text="@string/live"
         android:textColor="@color/Wine"
         android:textSize="30sp" />
+
 </RelativeLayout>

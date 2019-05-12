@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -43,12 +44,14 @@ public class VodsFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     String[] titles = null;
     int[] filmIds = null;
+    ProgressBar progressBar;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_vods, container, false);
+        progressBar = rootView.findViewById(R.id.progressBarVods);
         OkHttpHandler okHttpHandler = new OkHttpHandler();
         okHttpHandler.execute(url);
 
@@ -58,8 +61,6 @@ public class VodsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
 
-
-
         return rootView;
     }
 
@@ -67,6 +68,13 @@ public class VodsFragment extends Fragment {
     public class OkHttpHandler extends AsyncTask<String,String,String> {
 
         OkHttpClient client = new OkHttpClient();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setIndeterminate(true);
+        }
 
         @Override
         protected String doInBackground(String...params) {
@@ -91,7 +99,7 @@ public class VodsFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
+            progressBar.setVisibility(View.GONE);
             try {
                 JSONArray jsonarray = new JSONArray(s);
                 titles = new String[jsonarray.length()];
@@ -132,9 +140,12 @@ public class VodsFragment extends Fragment {
     public class postMovieId extends AsyncTask<String, String, String> {
 
         int filmId;
+
         public postMovieId(int filmId){
             this.filmId = filmId;
         }
+
+
         @Override
         protected String doInBackground(String... strings) {
             OkHttpClient client = new OkHttpClient();
