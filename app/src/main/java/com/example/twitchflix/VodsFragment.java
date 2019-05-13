@@ -119,13 +119,22 @@ public class VodsFragment extends Fragment {
                 public void onItemClick(CardAdapter.MyViewHolder holder) {
 
                     int filmId = holder.id;
+                    String film_url;
                     //Toast.makeText(getContext(), filmTitle + "" , Toast.LENGTH_LONG).show();
-                    //Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
-                    //String film_url = "https://ia800201.us.archive.org/22/items/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
-                    //intent.putExtra("film_url", film_url);
-                    //startActivity(intent);
                     postMovieId pmid = new postMovieId(filmId);
-                    pmid.execute("https://twitchflix-240014.appspot.com/webapi/get_movie");
+                    try{
+                        film_url = pmid.execute("https://twitchflix-240014.appspot.com/webapi/get_movie").get();
+                        Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
+                        intent.putExtra("film_url", film_url);
+                        startActivity(intent);
+
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+
+
+
                 }
             }, titles, filmIds);
 
@@ -170,7 +179,6 @@ public class VodsFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            System.out.println(s);
         }
     }
 }
