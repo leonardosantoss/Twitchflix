@@ -1,5 +1,6 @@
 package com.example.twitchflix;
 
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -61,6 +62,12 @@ public class VideoPlayerActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             mVideoView.pause();
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // do nothing, just override
     }
 
 }
