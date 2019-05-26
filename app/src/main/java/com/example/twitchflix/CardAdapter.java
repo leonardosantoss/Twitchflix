@@ -1,21 +1,34 @@
 package com.example.twitchflix;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import com.squareup.picasso.Picasso;
+
+import java.io.InputStream;
 
 public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>{
+
+    private static class imageParams{
+        ImageView image;
+        String link;
+
+        public imageParams(ImageView image, String link){
+            this.image = image;
+            this.link = link;
+        }
+    }
 
     // recycler view has no default onclicklistener
     // create interface to implement own onClick to each viewHolder
@@ -27,14 +40,16 @@ public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>
     //private String[] mFilm = {"Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9" };
     private OnItemClickListener listener;
     private String[] mFilm;
+    private String[] mImage;
     private int[] mFilmId;
 
 
 
-    public CardAdapter(OnItemClickListener listener, String[] mFilm, int[] mFilmId){
+    public CardAdapter(OnItemClickListener listener, String[] mFilm, int[] mFilmId, String[] mImage){
         this.listener = listener;
         this.mFilm = mFilm;
         this.mFilmId = mFilmId;
+        this.mImage = mImage;
     }
 
 
@@ -53,10 +68,15 @@ public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>
 
 
          // bind the data to its place inside the cardView and set the onClickListener
-         public void bind(final CardAdapter.MyViewHolder holder, String film_title, int film_image, int film_id, final OnItemClickListener listener){
+         public void bind(final CardAdapter.MyViewHolder holder, String film_title, String film_image, int film_id, final OnItemClickListener listener){
              title.setText(film_title);
-             image.setImageResource(film_image);
+             if(film_image.equals("default")){
+                 image.setImageResource(R.drawable.vod_icon);
+             }
+             else{
+                 Picasso.get().load(film_image).resize(85,110).into(image);
 
+             }
              itemView.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
@@ -82,7 +102,7 @@ public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
         // bind takes  a reference to the viewholder, the data for each cardview and the listener
-        myViewHolder.bind(myViewHolder, mFilm[i], R.drawable.vod_icon, mFilmId[i] ,listener);
+        myViewHolder.bind(myViewHolder, mFilm[i], mImage[i], mFilmId[i] ,listener);
 
     }
 

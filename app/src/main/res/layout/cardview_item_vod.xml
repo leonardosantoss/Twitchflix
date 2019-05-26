@@ -13,8 +13,9 @@
 
         <ImageView
             android:id="@+id/film_image"
+            android:layout_marginTop="5dp"
             android:layout_width="85dp"
-            android:layout_height="120dp"
+            android:layout_height="110dp"
             android:layout_gravity="center_horizontal"/>
 
         <TextView

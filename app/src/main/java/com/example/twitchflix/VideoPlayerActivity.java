@@ -1,22 +1,32 @@
 package com.example.twitchflix;
 
 import android.content.res.Configuration;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.VideoView;
 
 public class VideoPlayerActivity extends AppCompatActivity {
 
     private VideoView mVideoView;
     String film_url;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
+
+        progressBar = findViewById(R.id.progressBarVideoPlayer);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminate(true);
+
+
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -38,7 +48,15 @@ public class VideoPlayerActivity extends AppCompatActivity {
         mController.setMediaPlayer(mVideoView);
         mVideoView.setMediaController(mController);
 
-        mVideoView.start();
+
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.start();
+                progressBar.setVisibility(View.INVISIBLE);
+
+            }
+        });
 
 
     }

@@ -44,6 +44,7 @@ public class VodsFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     String[] titles = null;
+    String[] images = null;
     int[] filmIds = null;
     ProgressBar progressBar;
 
@@ -105,10 +106,12 @@ public class VodsFragment extends Fragment {
                 JSONArray jsonarray = new JSONArray(s);
                 titles = new String[jsonarray.length()];
                 filmIds = new int[jsonarray.length()];
+                images = new String[jsonarray.length()];
                 for (int i = 0; i < jsonarray.length(); i++) {
                     JSONObject jsonobject = jsonarray.getJSONObject(i);
                     titles[i] = jsonobject.getString("name");
                     filmIds[i] = jsonobject.getInt("idmovies");
+                    images[i] = jsonobject.getString("picturelink");
                 }
             }
             catch (JSONException e){
@@ -133,11 +136,8 @@ public class VodsFragment extends Fragment {
                         e.printStackTrace();
                     }
 
-
-
-
                 }
-            }, titles, filmIds);
+            }, titles, filmIds, images);
 
             // adapter to the card based layout
             mAdapter.notifyDataSetChanged();
@@ -155,6 +155,12 @@ public class VodsFragment extends Fragment {
             this.filmId = filmId;
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setIndeterminate(true);
+        }
 
         @Override
         protected String doInBackground(String... strings) {
@@ -180,6 +186,7 @@ public class VodsFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 }

@@ -14,4 +14,21 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
+
+    <ProgressBar
+        android:id="@+id/progressBarVideoPlayer"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="81dp"
+        android:layout_height="86dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:indeterminateTint="@color/Wine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/videoPlayer" />
+
 </android.support.constraint.ConstraintLayout>
