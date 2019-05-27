@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.vod_icon:
                         selectedFragment = new VodsFragment();
                         break;
+                    case R.id.profile_icon:
+                        selectedFragment = new ProfileFragment();
                     default:
                         break;
 
