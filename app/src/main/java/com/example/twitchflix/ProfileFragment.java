@@ -26,7 +26,7 @@ public class ProfileFragment extends Fragment {
     public boolean isLogged = false;
     View rootView;
     String username = null, password = null, login_response=null;
-    Button sendLoginInfo;
+    Button sendLoginInfo, registerButton, logoutButton;
     Fragment fragment;
     @Nullable
     @Override
@@ -36,13 +36,31 @@ public class ProfileFragment extends Fragment {
         final SharedPreferences.Editor editor = pref.edit();
 
         isLogged = pref.getBoolean("Logged", false);
+
         if(isLogged){
             rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+            logoutButton = rootView.findViewById(R.id.logout_button);
+
+            logoutButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("Logout!");
+                    editor.putBoolean("Logged", false);
+                    editor.commit();
+                    fragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.fragments_container);
+                    final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    ft.detach(fragment);
+                    ft.attach(fragment);
+                    ft.commit();
+                }
+            });
+
         }
         else{
 
             rootView = inflater.inflate(R.layout.fragment_profile_sign, container, false);
-            sendLoginInfo = rootView.findViewById(R.id.sendLoginInfo);
+            sendLoginInfo = rootView.findViewById(R.id.login_button);
+            registerButton = rootView.findViewById(R.id.register_button);
 
             sendLoginInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,13 +89,24 @@ public class ProfileFragment extends Fragment {
                                 break;
                             case "fail":
                                 Toast.makeText(getContext(), "FAIL", Toast.LENGTH_SHORT).show();
-                                isLogged = false;
                                 break;
                         }
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+            });
+
+
+            registerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    fragment = new RegisterFragment();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragments_container, fragment)
+                            .commit();
                 }
             });
 

@@ -18,6 +18,10 @@
     <string name="start_livestream">Start livestream</string>
     <string name="watch_livestrean">Watch livestrean</string>
     <string name="profile">Profile</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="submit">Submit</string>
 
 
 </resources>

@@ -10,4 +10,5 @@
     <color name="Wine">#A50D2B</color>
     <color name="DiffGrey">#989193</color>
     <color name="backgroundGrey">#444444</color>
+    <color name="backgroundMenu">#252525</color>
 </resources>
