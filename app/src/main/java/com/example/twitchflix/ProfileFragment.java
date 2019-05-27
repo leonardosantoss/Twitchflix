@@ -1,20 +1,124 @@
 package com.example.twitchflix;
 
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.io.IOException;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class ProfileFragment extends Fragment {
+    public boolean isLogged = false;
+    View rootView;
+    String username = null, password = null, login_response=null;
+    Button sendLoginInfo;
+    Fragment fragment;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        final SharedPreferences pref = getContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        final SharedPreferences.Editor editor = pref.edit();
+
+        isLogged = pref.getBoolean("Logged", false);
+        if(isLogged){
+            rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        }
+        else{
+
+            rootView = inflater.inflate(R.layout.fragment_profile_sign, container, false);
+            sendLoginInfo = rootView.findViewById(R.id.sendLoginInfo);
+
+            sendLoginInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    OkHttpHandler okHttpHandler = new OkHttpHandler();
+                    EditText usernameEditText = rootView.findViewById(R.id.login_username);
+                    EditText passwordEditText = rootView.findViewById(R.id.login_password);
+
+                    username = usernameEditText.getText().toString();
+                    password = passwordEditText.getText().toString();
+
+                    try {
+                        login_response = okHttpHandler.execute(username, password).get();
+                        switch (login_response){
+                            case "success":
+                                Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+                                editor.putBoolean("Logged", true);
+                                editor.commit();
+                                isLogged = pref.getBoolean("Logged", false);
+                                fragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.fragments_container);
+                                final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                                        ft.detach(fragment);
+                                        ft.attach(fragment);
+                                        ft.commit();
+                                break;
+                            case "fail":
+                                Toast.makeText(getContext(), "FAIL", Toast.LENGTH_SHORT).show();
+                                isLogged = false;
+                                break;
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        }
 
         return rootView;
+    }
+
+
+
+
+    public class OkHttpHandler extends AsyncTask<String,String,String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient();
+            username = strings[0];
+            password = strings[1];
+
+            RequestBody formBody = new FormBody.Builder()
+                    .add("nick", username + "")
+                    .add("passwd", password + "")
+                    .build();
+            Request request = new Request.Builder()
+                    .url("https://twitchflix-240014.appspot.com/webapi/login")
+                    .post(formBody)
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                System.out.println("Handle Response");
+                return response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
     }
 }
