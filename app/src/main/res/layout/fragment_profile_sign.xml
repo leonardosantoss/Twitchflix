@@ -11,7 +11,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/LightBlack"
+        android:background="@color/backgroundGrey"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -23,8 +23,8 @@
             android:layout_marginBottom="16dp"
             android:layout_marginTop="5dp"
             android:text="Login"
-            android:textColor="@color/backgroundMenu"
-            android:textSize="40sp"
+            android:textColor="@color/MenuClickedWhite"
+            android:textSize="28sp"
             android:typeface="serif" />
 
         <EditText
