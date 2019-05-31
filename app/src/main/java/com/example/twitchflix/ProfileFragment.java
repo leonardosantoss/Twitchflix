@@ -36,6 +36,7 @@ public class ProfileFragment extends Fragment {
         final SharedPreferences.Editor editor = pref.edit();
 
         isLogged = pref.getBoolean("Logged", false);
+        pref.getString("Username", "default");
 
         if(isLogged){
             rootView = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -46,6 +47,7 @@ public class ProfileFragment extends Fragment {
                 public void onClick(View v) {
                     System.out.println("Logout!");
                     editor.putBoolean("Logged", false);
+                    editor.putString("Username", "default");
                     editor.commit();
                     fragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.fragments_container);
                     final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -79,6 +81,7 @@ public class ProfileFragment extends Fragment {
                             case "success":
                                 Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
                                 editor.putBoolean("Logged", true);
+                                editor.putString("Username", username);
                                 editor.commit();
                                 isLogged = pref.getBoolean("Logged", false);
                                 fragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.fragments_container);
