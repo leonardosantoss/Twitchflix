@@ -99,7 +99,6 @@ public class LiveStreamActivity extends AppCompatActivity {
             //stop stream
             //rtmpCamera1.stopStream();
 
-
         }
         else {
             System.out.println("Device does not have a working camera!");

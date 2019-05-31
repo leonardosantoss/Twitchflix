@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class ProfileFragment extends Fragment {
     View rootView;
     String username = null, password = null, login_response=null;
     Button sendLoginInfo, registerButton, logoutButton;
+    TextView username_textView;
     Fragment fragment;
     @Nullable
     @Override
@@ -36,12 +38,14 @@ public class ProfileFragment extends Fragment {
         final SharedPreferences.Editor editor = pref.edit();
 
         isLogged = pref.getBoolean("Logged", false);
-        pref.getString("Username", "default");
+        username = pref.getString("Username", "default");
 
         if(isLogged){
             rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-            logoutButton = rootView.findViewById(R.id.logout_button);
 
+            username_textView = rootView.findViewById(R.id.username_textView);
+            username_textView.setText("Hello, " + username);
+            logoutButton = rootView.findViewById(R.id.logout_button);
             logoutButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -84,6 +88,7 @@ public class ProfileFragment extends Fragment {
                                 editor.putString("Username", username);
                                 editor.commit();
                                 isLogged = pref.getBoolean("Logged", false);
+                                username = pref.getString("Username", "default");
                                 fragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.fragments_container);
                                 final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                                         ft.detach(fragment);
