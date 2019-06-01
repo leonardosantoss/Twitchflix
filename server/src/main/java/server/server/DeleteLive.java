@@ -24,8 +24,8 @@ public class DeleteLive {
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_PLAIN)
-    public String getIt(@FormParam("liveId") String id) {
-    	System.out.println("ID: " + id);
+    public String getIt(@FormParam("link") String link) {
+    	System.out.println("LINK: " + link);
     	Connection conn = null;
         Statement stmt = null;
         try {
@@ -42,7 +42,7 @@ public class DeleteLive {
             stmt = conn.createStatement();
             
             //CHANGE QUERY
-            String sql = "delete from lives where idlives =" + id;
+            String sql = "delete from lives where link = '" + link + "'";
 
             stmt.executeUpdate(sql);
             
