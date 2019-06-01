@@ -100,10 +100,10 @@ public class DisplayLivesFragment extends Fragment {
                     postLiveId plid = new postLiveId(liveId);
                     try{
                         live_url = plid.execute("https://twitchflix-240014.appspot.com/webapi/get_live").get();
-                        Toast.makeText(getContext(), live_url, Toast.LENGTH_SHORT).show();
-                        //Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
-                        //intent.putExtra("film_url", live_url);
-                        //startActivity(intent);
+                        //Toast.makeText(getContext(), live_url, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
+                        intent.putExtra("film_url", live_url);
+                        startActivity(intent);
 
                     } catch (Exception e){
                         e.printStackTrace();

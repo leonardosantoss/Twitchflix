@@ -24,8 +24,9 @@
                 android:id="@+id/watch_livestream"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:fontFamily="@font/palanquin_dark"
                 android:gravity="center"
-                android:text="@string/watch_live_streams"
+                android:text="Watch Livestreams"
                 android:textColor="@android:color/black"
                 android:textSize="30sp" />
         </android.support.v7.widget.CardView>
@@ -42,8 +43,9 @@
                 android:id="@+id/start_livestream"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:fontFamily="@font/palanquin_dark"
                 android:gravity="center"
-                android:text="@string/start_your_own_livestream"
+                android:text="Start Streaming"
                 android:textColor="@android:color/black"
                 android:textSize="30sp" />
 
