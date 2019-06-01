@@ -44,7 +44,6 @@ public class DisplayLivesFragment extends Fragment {
         okHttpHandler.execute(url);
 
 
-
         recyclerView = rootView.findViewById(R.id.recycler_view_live);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -84,8 +83,8 @@ public class DisplayLivesFragment extends Fragment {
                 liveIds = new int[jsonarray.length()];
                 for (int i = 0; i < jsonarray.length(); i++) {
                     JSONObject jsonobject = jsonarray.getJSONObject(i);
-                    titles[i] = jsonobject.getString("name");
                     liveIds[i] = jsonobject.getInt("idlives");
+                    titles[i] = jsonobject.getString("name");
                 }
             }
             catch (JSONException e){
@@ -102,9 +101,9 @@ public class DisplayLivesFragment extends Fragment {
                     try{
                         live_url = plid.execute("https://twitchflix-240014.appspot.com/webapi/get_live").get();
                         Toast.makeText(getContext(), live_url, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
-                        intent.putExtra("film_url", live_url);
-                        startActivity(intent);
+                        //Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
+                        //intent.putExtra("film_url", live_url);
+                        //startActivity(intent);
 
                     } catch (Exception e){
                         e.printStackTrace();

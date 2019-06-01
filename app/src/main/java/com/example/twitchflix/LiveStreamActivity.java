@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,14 @@ import com.pedro.encoder.input.video.CameraOpenException;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 
 import net.ossrs.rtmp.ConnectCheckerRtmp;
+
+import java.io.IOException;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class LiveStreamActivity extends AppCompatActivity implements ConnectCheckerRtmp, SurfaceHolder.Callback {
 
@@ -39,6 +48,7 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
                 username = null;
+
             } else {
                 username = extras.getString("username");
             }
@@ -79,6 +89,15 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
                     if(rtmpCamera1.isRecording() || rtmpCamera1.prepareAudio() && rtmpCamera1.prepareVideo()){
                         rtmpCamera1.startStream(url);
                         rtmpCamera1.startPreview();
+                        activate_live activate = new activate_live(url, username);
+
+                        try{
+                            activate.execute(); // should treat response later
+
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+
                     }
                     else{
                         System.out.println("Error preparing stream, This device cant do it");
@@ -86,8 +105,15 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
                     button_live_stream.setText("Stop Stream");
 
                 }else{
+                    delete_live delete = new delete_live(url);
                     button_live_stream.setText("Start Stream");
                     rtmpCamera1.stopStream();
+                    try{
+                        delete.execute(); // should treat response later
+
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -209,6 +235,71 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
                     startActivity(intent);
                 }
                 break;
+        }
+    }
+
+
+
+    public class activate_live extends AsyncTask<String, String, String> {
+
+        String link;
+        String name;
+
+        public activate_live(String link, String name){
+            this.name = name;
+            this.link = link;
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient();
+            RequestBody formBody = new FormBody.Builder()
+                    .add("link", link + "")
+                    .add("name", name + "")
+                    .build();
+            Request request = new Request.Builder()
+                    .url("https://twitchflix-240014.appspot.com/webapi/activate_live")
+                    .post(formBody)
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                System.out.println("Handle Response");
+                return response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    public class delete_live extends AsyncTask<String, String, String> {
+
+        String link;
+
+        public delete_live(String link){
+            this.link = link;
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient();
+            RequestBody formBody = new FormBody.Builder()
+                    .add("link", link + "")
+                    .build();
+            Request request = new Request.Builder()
+                    .url("https://twitchflix-240014.appspot.com/webapi/delete_live")
+                    .post(formBody)
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                System.out.println("Handle Response");
+                return response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 }
