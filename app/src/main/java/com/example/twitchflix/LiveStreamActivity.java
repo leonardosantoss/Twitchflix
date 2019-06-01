@@ -2,6 +2,7 @@ package com.example.twitchflix;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,7 +28,7 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
     String username, url = null;
     Button button_live_stream, button_swap_camera;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
-    private static final int MY_AUDIO_REQUEST_CODE = 100;
+    private static final int MY_AUDIO_REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -186,12 +187,28 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MY_CAMERA_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Camera permission granted", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_LONG).show();
-            }
+
+        switch(requestCode){
+            case MY_CAMERA_REQUEST_CODE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Camera permission granted", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Camera permission denied", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case MY_AUDIO_REQUEST_CODE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Audio permission granted", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Audio permission denied", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                }
+                break;
         }
     }
 }

@@ -1,13 +1,9 @@
 package com.example.twitchflix;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +12,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
 
 public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>{
 
-    private static class imageParams{
-        ImageView image;
-        String link;
-
-        public imageParams(ImageView image, String link){
-            this.image = image;
-            this.link = link;
-        }
-    }
 
     // recycler view has no default onclicklistener
     // create interface to implement own onClick to each viewHolder

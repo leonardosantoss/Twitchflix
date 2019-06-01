@@ -5,13 +5,13 @@
         android:title="Main Settings">
 
         <SwitchPreference
-            android:key="internet_access_switch"
-            android:title="Allow Internet Access"
+            android:key="allow_microphone"
+            android:title="Allow Microphone Usage"
             android:defaultValue="true"/>
 
         <SwitchPreference
-            android:key="mobile_data_switch"
-            android:title="Allow Mobile Data"
+            android:key="allow_camera"
+            android:title="Allow Camera Usage"
             android:defaultValue="true"/>
     </PreferenceCategory>
 
