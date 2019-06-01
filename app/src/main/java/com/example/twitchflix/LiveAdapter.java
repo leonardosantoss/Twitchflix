@@ -36,9 +36,9 @@ public class LiveAdapter extends RecyclerView.Adapter <LiveAdapter.MyViewHolder>
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            this.title = (TextView) itemView.findViewById(R.id.film_title);
-            this.image = (ImageView) itemView.findViewById(R.id.film_image);
-            this.cardView = itemView.findViewById(R.id.card_view);
+            this.title = itemView.findViewById(R.id.live_title);
+            this.image =   itemView.findViewById(R.id.image_live);
+            this.cardView = itemView.findViewById(R.id.card_view_live);
         }
 
 
