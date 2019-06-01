@@ -95,7 +95,10 @@ public class CardAdapter extends RecyclerView.Adapter <CardAdapter.MyViewHolder>
 
     @Override
     public int getItemCount() {
-        return mFilm.length;
+        if(mFilm != null){
+            return  mFilm.length;
+        }
+        return 0;
     }
 
 

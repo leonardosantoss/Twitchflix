@@ -37,13 +37,13 @@ public class LiveAdapter extends RecyclerView.Adapter <LiveAdapter.MyViewHolder>
         public MyViewHolder(View itemView) {
             super(itemView);
             this.title = itemView.findViewById(R.id.live_title);
-            this.image =   itemView.findViewById(R.id.image_live);
+            this.image = itemView.findViewById(R.id.image_live);
             this.cardView = itemView.findViewById(R.id.card_view_live);
         }
 
 
         // bind the data to its place inside the cardView and set the onClickListener
-        public void bind(final LiveAdapter.MyViewHolder holder, String live_title, int film_id, final LiveAdapter.OnItemClickListener listener){
+        public void bind(final LiveAdapter.MyViewHolder holder, String live_title, int live_id, final LiveAdapter.OnItemClickListener listener){
             title.setText(live_title);
             image.setImageResource(R.drawable.live_icon);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -52,11 +52,9 @@ public class LiveAdapter extends RecyclerView.Adapter <LiveAdapter.MyViewHolder>
                     listener.onItemClick(holder);
                 }
             });
-            id = film_id;
+            id = live_id;
         }
-
     }
-
 
     @NonNull
     @Override
@@ -73,7 +71,10 @@ public class LiveAdapter extends RecyclerView.Adapter <LiveAdapter.MyViewHolder>
 
     @Override
     public int getItemCount() {
-        return mTitles.length;
+        if(mTitles != null){
+            return mTitles.length;
+        }
+        return 0;
     }
 
 
