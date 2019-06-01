@@ -35,7 +35,7 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
     RtmpCamera1 rtmpCamera1;
     SurfaceView surfaceView;
     String username, url = null;
-    Button button_live_stream, button_swap_camera;
+    Button button_live_stream, button_swap_camera, button_go_back_live;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
     private static final int MY_AUDIO_REQUEST_CODE = 101;
 
@@ -62,6 +62,7 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
         surfaceView.getHolder().addCallback(this);
         button_live_stream = findViewById(R.id.button_live_stream);
         button_swap_camera = findViewById(R.id.button_swap_camera);
+        button_go_back_live = findViewById(R.id.button_go_back_live);
 
         // check if device has a camera
         if(checkCameraHardware(getApplicationContext())){
@@ -105,15 +106,16 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
                     button_live_stream.setText("Stop Stream");
 
                 }else{
-                    delete_live delete = new delete_live(url);
+                    //delete_live delete = new delete_live(url);
                     button_live_stream.setText("Start Stream");
                     rtmpCamera1.stopStream();
+                    /*
                     try{
                         delete.execute(); // should treat response later
 
                     } catch (Exception e){
                         e.printStackTrace();
-                    }
+                    }*/
                 }
             }
         });
@@ -126,6 +128,18 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
                 } catch (CameraOpenException e) {
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        button_go_back_live.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!rtmpCamera1.isStreaming()){
+                    rtmpCamera1.stopStream();
+                }
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+
             }
         });
 
@@ -176,6 +190,13 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
             @Override
             public void run() {
                 Toast.makeText(LiveStreamActivity.this, "Disconnected", Toast.LENGTH_SHORT).show();
+                delete_live delete = new delete_live(url);
+                try{
+                    delete.execute(); // should treat response later
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }

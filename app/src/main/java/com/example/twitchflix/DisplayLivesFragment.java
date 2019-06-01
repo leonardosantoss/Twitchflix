@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -101,8 +100,8 @@ public class DisplayLivesFragment extends Fragment {
                     try{
                         live_url = plid.execute("https://twitchflix-240014.appspot.com/webapi/get_live").get();
                         //Toast.makeText(getContext(), live_url, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
-                        intent.putExtra("film_url", live_url);
+                        Intent intent = new Intent(getContext(), RtmpPlayerActivity.class);
+                        intent.putExtra("live_url", live_url);
                         startActivity(intent);
 
                     } catch (Exception e){

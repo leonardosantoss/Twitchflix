@@ -23,6 +23,8 @@
     <string name="start_stream">Start Stream</string>
     <string name="live_title">Live Title</string>
     <string name="todo">TODO</string>
+    <string name="back">Back</string>
+    <string name="swap_camera">Swap Camera</string>
 
 
 </resources>
