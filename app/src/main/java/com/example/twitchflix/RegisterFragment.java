@@ -72,6 +72,7 @@ public class RegisterFragment extends Fragment {
                         case "success":
                             Toast.makeText(getContext(), "Sign Up Success", Toast.LENGTH_SHORT).show();
                             editor.putBoolean("Logged", true);
+                            editor.putString("Username", username);
                             editor.commit();
 
                             fragment = new ProfileFragment();

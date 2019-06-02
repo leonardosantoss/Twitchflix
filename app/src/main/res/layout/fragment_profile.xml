@@ -11,11 +11,11 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="20dp"
         android:orientation="vertical"
         android:padding="16dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="148dp"
-        android:layout_margin="20dp">
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello, "
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/logout_button"
@@ -48,6 +48,18 @@
             android:textColor="@color/MenuClickedWhite"
             android:textSize="12sp" />
 
+
+        <Button
+            android:id="@+id/delete_user_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="100dp"
+            android:background="@color/Wine"
+            android:fontFamily="sans-serif-medium"
+            android:text="Delete Account"
+            android:textColor="@color/MenuClickedWhite"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

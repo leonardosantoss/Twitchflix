@@ -27,7 +27,7 @@ public class ProfileFragment extends Fragment {
     public boolean isLogged = false;
     View rootView;
     String username = null, password = null, login_response=null;
-    Button sendLoginInfo, registerButton, logoutButton;
+    Button sendLoginInfo, registerButton, logoutButton, deleteUserButton;
     TextView username_textView;
     Fragment fragment;
     @Nullable
@@ -45,6 +45,7 @@ public class ProfileFragment extends Fragment {
 
             username_textView = rootView.findViewById(R.id.username_textView);
             username_textView.setText("Hello, " + username);
+            deleteUserButton = rootView.findViewById(R.id.delete_user_button);
             logoutButton = rootView.findViewById(R.id.logout_button);
             logoutButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -53,6 +54,24 @@ public class ProfileFragment extends Fragment {
                     editor.putBoolean("Logged", false);
                     editor.putString("Username", "default");
                     editor.commit();
+                    fragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.fragments_container);
+                    final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    ft.detach(fragment);
+                    ft.attach(fragment);
+                    ft.commit();
+                }
+            });
+
+
+            deleteUserButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("Account deleted!");
+                    editor.putBoolean("Logged", false);
+                    editor.putString("Username", "default");
+                    editor.commit();
+                    DeleteUser deleteUser = new DeleteUser();
+                    deleteUser.execute(username);
                     fragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.fragments_container);
                     final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                     ft.detach(fragment);
@@ -140,6 +159,38 @@ public class ProfileFragment extends Fragment {
                     .build();
             Request request = new Request.Builder()
                     .url("https://twitchflix-240014.appspot.com/webapi/login")
+                    .post(formBody)
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                System.out.println("Handle Response");
+                return response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+    }
+
+
+    public class DeleteUser extends AsyncTask<String,String,String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient();
+            username = strings[0];
+
+            RequestBody formBody = new FormBody.Builder()
+                    .add("nick", username + "")
+                    .build();
+            Request request = new Request.Builder()
+                    .url("https://twitchflix-240014.appspot.com/webapi/delete_user")
                     .post(formBody)
                     .build();
 
