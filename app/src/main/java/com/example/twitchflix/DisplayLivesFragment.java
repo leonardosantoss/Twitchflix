@@ -77,13 +77,15 @@ public class DisplayLivesFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             try {
-                JSONArray jsonarray = new JSONArray(s);
-                titles = new String[jsonarray.length()];
-                liveIds = new int[jsonarray.length()];
-                for (int i = 0; i < jsonarray.length(); i++) {
-                    JSONObject jsonobject = jsonarray.getJSONObject(i);
-                    liveIds[i] = jsonobject.getInt("idlives");
-                    titles[i] = jsonobject.getString("name");
+                if(s != null) {
+                    JSONArray jsonarray = new JSONArray(s);
+                    titles = new String[jsonarray.length()];
+                    liveIds = new int[jsonarray.length()];
+                    for (int i = 0; i < jsonarray.length(); i++) {
+                        JSONObject jsonobject = jsonarray.getJSONObject(i);
+                        liveIds[i] = jsonobject.getInt("idlives");
+                        titles[i] = jsonobject.getString("name");
+                    }
                 }
             }
             catch (JSONException e){

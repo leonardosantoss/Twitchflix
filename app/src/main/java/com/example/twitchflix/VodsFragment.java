@@ -96,16 +96,19 @@ public class VodsFragment extends Fragment {
             super.onPostExecute(s);
             progressBar.setVisibility(View.GONE);
             try {
-                JSONArray jsonarray = new JSONArray(s);
-                titles = new String[jsonarray.length()];
-                filmIds = new int[jsonarray.length()];
-                images = new String[jsonarray.length()];
-                for (int i = 0; i < jsonarray.length(); i++) {
-                    JSONObject jsonobject = jsonarray.getJSONObject(i);
-                    titles[i] = jsonobject.getString("name");
-                    filmIds[i] = jsonobject.getInt("idmovies");
-                    images[i] = jsonobject.getString("picturelink");
+                if(s != null){
+                    JSONArray jsonarray = new JSONArray(s);
+                    titles = new String[jsonarray.length()];
+                    filmIds = new int[jsonarray.length()];
+                    images = new String[jsonarray.length()];
+                    for (int i = 0; i < jsonarray.length(); i++) {
+                        JSONObject jsonobject = jsonarray.getJSONObject(i);
+                        titles[i] = jsonobject.getString("name");
+                        filmIds[i] = jsonobject.getInt("idmovies");
+                        images[i] = jsonobject.getString("picturelink");
+                    }
                 }
+
             }
             catch (JSONException e){
                 Log.e("TwitchFlix", "unexpected JSON exception", e);
