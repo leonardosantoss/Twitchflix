@@ -23,6 +23,9 @@ import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 import net.ossrs.rtmp.ConnectCheckerRtmp;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -36,8 +39,12 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
     SurfaceView surfaceView;
     String username, url = null;
     Button button_live_stream, button_swap_camera, button_go_back_live;
-    private static final int MY_CAMERA_REQUEST_CODE = 100;
-    private static final int MY_AUDIO_REQUEST_CODE = 101;
+    private static final int PERMISSIONS_REQUEST_CODE = 1;
+    String[] appPermissions = {
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CAMERA
+    };
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,15 +74,11 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
         // check if device has a camera
         if(checkCameraHardware(getApplicationContext())){
             // Check permission to use camera
-            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
-                System.out.println("Check for permission Camera");
-                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+            if(checkAndRequestPermissions()){
+                rtmpCamera1 = new RtmpCamera1(surfaceView, this);
+
             }
-            if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_DENIED){
-                System.out.println("Check for permission Camera");
-                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.RECORD_AUDIO}, MY_AUDIO_REQUEST_CODE);
-            }
-            rtmpCamera1 = new RtmpCamera1(surfaceView, this);
+
         }
         else {
             Toast.makeText(this, "Device does not have a working camera!", Toast.LENGTH_SHORT).show();
@@ -152,19 +155,24 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        rtmpCamera1.startPreview();
+        if(rtmpCamera1 != null){
+           rtmpCamera1.startPreview();
+        }
+
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        if(rtmpCamera1 != null){
 
-        if (rtmpCamera1.isRecording()) {
-            rtmpCamera1.stopRecord();
+            if (rtmpCamera1.isRecording()) {
+                rtmpCamera1.stopRecord();
+            }
+            if (rtmpCamera1.isStreaming()) {
+                rtmpCamera1.stopStream();
+            }
+            rtmpCamera1.stopPreview();
         }
-        if (rtmpCamera1.isStreaming()) {
-            rtmpCamera1.stopStream();
-        }
-        rtmpCamera1.stopPreview();
     }
 
     @Override
@@ -178,7 +186,9 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
             public void run() {
                 Toast.makeText(LiveStreamActivity.this, "Connection failed. ",
                         Toast.LENGTH_SHORT).show();
-                rtmpCamera1.stopStream();
+                if(rtmpCamera1 != null){
+                  rtmpCamera1.stopStream();
+                }
 
             }
         });
@@ -231,32 +241,50 @@ public class LiveStreamActivity extends AppCompatActivity implements ConnectChec
         }
     }
 
+
+
+    public boolean checkAndRequestPermissions(){
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for(String perm : appPermissions){
+            if(ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED){
+                listPermissionsNeeded.add(perm);
+            }
+        }
+
+        if(!listPermissionsNeeded.isEmpty()){
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),
+                    PERMISSIONS_REQUEST_CODE);
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        switch(requestCode){
-            case MY_CAMERA_REQUEST_CODE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Camera permission granted", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this, "Camera permission denied", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
+        if(requestCode == PERMISSIONS_REQUEST_CODE){
+            HashMap<String, Integer> permissionsResult = new HashMap<>();
+            int denyCount = 0;
+
+            for(int i=0;i<grantResults.length;i++){
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED){
+                    permissionsResult.put(permissions[i], grantResults[i]);
+                    denyCount++;
                 }
-                break;
-            case MY_AUDIO_REQUEST_CODE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Audio permission granted", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this, "Audio permission denied", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                }
-                break;
+            }
+
+            if(denyCount == 0){
+                  rtmpCamera1 = new RtmpCamera1(surfaceView, this);
+                  rtmpCamera1.startPreview();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Need permissions to start streaming", Toast.LENGTH_SHORT);
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+            }
         }
+
     }
 
 
