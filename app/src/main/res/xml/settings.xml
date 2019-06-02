@@ -5,13 +5,15 @@
         android:title="Main Settings">
 
         <SwitchPreference
-            android:key="allow_microphone"
-            android:title="Allow Microphone Usage"
-            android:defaultValue="true"/>
+            android:buttonTint="@color/Wine"
+            android:defaultValue="true"
+            android:key="option_1"
+            android:title="Option 1" />
 
         <SwitchPreference
-            android:key="allow_camera"
-            android:title="Allow Camera Usage"
+            android:buttonTint="@color/Wine"
+            android:key="option_2"
+            android:title="Option 2"
             android:defaultValue="true"/>
     </PreferenceCategory>
 

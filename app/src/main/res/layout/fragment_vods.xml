@@ -4,6 +4,16 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundGrey">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:text="Available videos"
+        android:gravity="center"
+        android:fontFamily="@font/palanquin_dark"
+        android:textColor="@color/MenuClickedWhite"
+        android:textSize="26sp" />
+
     <ProgressBar
         android:id="@+id/progressBarVods"
         style="?android:attr/progressBarStyle"
@@ -15,10 +25,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_vods"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="655dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:scrollbars="vertical"
-        />
+        android:layout_marginTop="75dp"
+        android:scrollbars="vertical" />
 
 </RelativeLayout>

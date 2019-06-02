@@ -21,11 +21,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                if(key.equals("allow_microphone")){
-                    Toast.makeText(getContext(), "Microphone", Toast.LENGTH_SHORT).show();
+                if(key.equals("option_1")){
+                    Toast.makeText(getContext(), "Option 1", Toast.LENGTH_SHORT).show();
                 }
-                else if(key.equals("allow_camera")){
-                    Toast.makeText(getContext(), "Camera", Toast.LENGTH_SHORT).show();
+                else if(key.equals("option_2")){
+                    Toast.makeText(getContext(), "Option_2", Toast.LENGTH_SHORT).show();
                 }
             }
         };
